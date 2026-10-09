@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react"
-import { Navigate, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 
 export default function Home(){
     document.title = "Home"
-    let chamada: number = 0
+    
     const[clicado,setClicado] = useState<number>(0);
 
     useEffect(() => { 
