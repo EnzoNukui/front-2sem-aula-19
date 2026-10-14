@@ -7,29 +7,31 @@ import { MdDelete as Deletar} from "react-icons/md";
 export default function Produtos(){
     document.title = "Produto"
 
+    const API_URL = import.meta.env.VITE_API_URL;
+
     const navigate = useNavigate();
 
     const[produtos, setProdutos] = useState<TipoProduto[]>([]);
     
-    useEffect(()=>{
-        const carregaProdutos = async ()=>{
-            try{
-                const resposta = await fetch("http://localhost:3001/produtos")
-
-                if(!resposta.ok){
-                    throw new Error("Erro na listagem dos produtos!")
-                }
-
-                const data:TipoProduto[]= await resposta.json();
-                setProdutos(data);
-
-            } catch(error){
-                console.error(error)
+    useEffect(() => {
+        const carregarProdutos = async () => {
+        try {
+            const response = await fetch(API_URL);
+            if (!response.ok) {
+                throw new Error(`Erro na listagem: ${response.status}`);
             }
-            
+            const resultado = await response.json();
+            if (resultado.status === "error") {
+                throw new Error(resultado.message);
+            }
+            setProdutos(resultado.data);
+        } catch (error) {
+            console.error(error);
         }
-        carregaProdutos();
-    },[])
+        };
+        carregarProdutos();
+    }, []);
+
 
     const handDelete = async (id:string)=>{
         try{
